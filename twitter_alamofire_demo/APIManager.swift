@@ -15,8 +15,8 @@ import KeychainAccess
 class APIManager: SessionManager {
     
     // MARK: TODO: Add App Keys
-    static let consumerKey = "YOUR_KEY_HERE"
-    static let consumerSecret = "YOUR_SECRET_HERE"
+    static let consumerKey = "yvv5etUl1rweaUk0GND2dFf0f"
+    static let consumerSecret = "zl4ipFcYqfukc2FkANfsTLxKPwLUKX2ii6szju6oZpOt9XVR6E"
 
     static let requestTokenURL = "https://api.twitter.com/oauth/request_token"
     static let authorizeURL = "https://api.twitter.com/oauth/authorize"
@@ -42,6 +42,7 @@ class APIManager: SessionManager {
                     
                     // MARK: TODO: set User.current, so that it's persisted
                     
+                    User.current = user
                     success()
                 }
             })
@@ -78,6 +79,7 @@ class APIManager: SessionManager {
             let tweets = tweetDictionaries.flatMap({ (dictionary) -> Tweet in
                 Tweet(dictionary: dictionary)
             })
+            print(tweets)
 
             completion(tweets, nil)
             return
@@ -108,6 +110,15 @@ class APIManager: SessionManager {
                     completion(tweets, nil)
                 }
         }
+    }
+    
+    // MARK: TODO: Logout
+    
+    static func logout() {
+        User.current = nil
+        APIManager.shared.clearCredentials()
+        NotificationCenter.default.post(name: NSNotification.Name("didLogout"), object: nil)
+        
     }
     
     // MARK: TODO: Favorite a Tweet

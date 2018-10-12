@@ -21,8 +21,10 @@ class TimelineViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.rowHeight = 200
-
+        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.dataSource = self as UITableViewDataSource
+        completeNetworkRequest()
         // Do any additional setup after loading the view.
     }
 
@@ -38,7 +40,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource {
                 print(error.localizedDescription)
             } else {
                 self.tweets = tweets!
-                print(self.tweets)
                 self.tableView.reloadData()
             }
         }
@@ -56,5 +57,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource {
         
         return cell
     }
+    
 
 }

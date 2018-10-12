@@ -25,8 +25,9 @@ class TweetCell: UITableViewCell {
     
     var tweet: Tweet? {
         didSet {
-            screenNameLabel.text = tweet?.user.screenName
-            usernameLabel.text = tweet?.user.name
+            profilePicImageView.af_setImage(withURL: (tweet?.user.profilepic)!)
+            screenNameLabel.text = tweet?.user.name
+            usernameLabel.text = "@" + (tweet?.user.screenName)!
             timeStampLabel.text = tweet?.createdAtString
             tweetLabel.text = tweet?.text
             retweetCountLabel.text = "\(tweet!.retweetCount)"
@@ -47,5 +48,7 @@ class TweetCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    
 
 }

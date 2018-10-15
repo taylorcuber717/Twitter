@@ -16,7 +16,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource {
         APIManager.logout()
     }
     var tweets: [Tweet]? = []
-    var refreshControl: UIRefreshControl?
+    var refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +24,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource {
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.dataSource = self as UITableViewDataSource
+        refreshControl.addTarget(self, action: #selector(completeNetworkRequest), for: UIControlEvents.valueChanged)
+        // add refresh control to table view
+        tableView.insertSubview(refreshControl, at: 0)
         completeNetworkRequest()
         // Do any additional setup after loading the view.
     }
@@ -41,6 +44,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource {
             } else {
                 self.tweets = tweets!
                 self.tableView.reloadData()
+                self.refreshControl.endRefreshing()
             }
         }
         
@@ -54,7 +58,7 @@ class TimelineViewController: UIViewController, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCell") as! TweetCell
         let tweet = tweets![indexPath.row]
         cell.tweet = tweet
-        
+        cell.parentView = self as TimelineViewController
         return cell
     }
     

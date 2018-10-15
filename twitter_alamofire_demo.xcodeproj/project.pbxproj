@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		547221C96829E6F537FCE2FE /* Pods_twitter_alamofire_demoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FCA05DC47A45B9943F23F5F /* Pods_twitter_alamofire_demoUITests.framework */; };
 		6C028F67F4B75B9CE911AB20 /* Pods_twitter_alamofire_demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 001F2EB27736B82E6AF0082B /* Pods_twitter_alamofire_demo.framework */; };
+		73550B4E21752BE400797852 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73550B4D21752BE400797852 /* DetailViewController.swift */; };
 		73DF7169216BF453002DE93A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DF7168216BF453002DE93A /* User.swift */; };
 		73DF716B216BFA25002DE93A /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DF716A216BFA24002DE93A /* Tweet.swift */; };
 		73DF716D216C0794002DE93A /* TweetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73DF716C216C0794002DE93A /* TweetCell.swift */; };
@@ -47,6 +48,7 @@
 		434659329CA4ED45495F750D /* Pods-twitter_alamofire_demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-twitter_alamofire_demo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-twitter_alamofire_demo/Pods-twitter_alamofire_demo.debug.xcconfig"; sourceTree = "<group>"; };
 		4DFA54CBFE40EC0C9E20906F /* Pods-twitter_alamofire_demoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-twitter_alamofire_demoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-twitter_alamofire_demoTests/Pods-twitter_alamofire_demoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		55D629C137D93399CE6DE905 /* Pods-twitter_alamofire_demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-twitter_alamofire_demo.release.xcconfig"; path = "Pods/Target Support Files/Pods-twitter_alamofire_demo/Pods-twitter_alamofire_demo.release.xcconfig"; sourceTree = "<group>"; };
+		73550B4D21752BE400797852 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		73DF7168216BF453002DE93A /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		73DF716A216BFA24002DE93A /* Tweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
 		73DF716C216C0794002DE93A /* TweetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetCell.swift; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 			children = (
 				73DF7167216BF39D002DE93A /* Model */,
 				ED1AFD341E942B2500FD4B90 /* Main.storyboard */,
+				73550B4D21752BE400797852 /* DetailViewController.swift */,
 				73DF716C216C0794002DE93A /* TweetCell.swift */,
 				ED1D23501EF7650B00C51ACC /* API */,
 				ED1D234A1EF6E3B800C51ACC /* View Controllers */,
@@ -442,6 +445,7 @@
 				73DF716B216BFA25002DE93A /* Tweet.swift in Sources */,
 				73DF7169216BF453002DE93A /* User.swift in Sources */,
 				ED1AFD311E942B2500FD4B90 /* AppDelegate.swift in Sources */,
+				73550B4E21752BE400797852 /* DetailViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

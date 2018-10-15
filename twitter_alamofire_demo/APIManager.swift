@@ -74,16 +74,16 @@ class APIManager: SessionManager {
 
         // This uses tweets from disk to avoid hitting rate limit. Comment out if you want fresh
         // tweets,
-        if let data = UserDefaults.standard.object(forKey: "hometimeline_tweets") as? Data {
-            let tweetDictionaries = NSKeyedUnarchiver.unarchiveObject(with: data) as! [[String: Any]]
-            let tweets = tweetDictionaries.flatMap({ (dictionary) -> Tweet in
-                Tweet(dictionary: dictionary)
-            })
-            print(tweets)
-
-            completion(tweets, nil)
-            return
-        }
+//        if let data = UserDefaults.standard.object(forKey: "hometimeline_tweets") as? Data {
+//            let tweetDictionaries = NSKeyedUnarchiver.unarchiveObject(with: data) as! [[String: Any]]
+//            let tweets = tweetDictionaries.flatMap({ (dictionary) -> Tweet in
+//                Tweet(dictionary: dictionary)
+//            })
+//            print(tweets)
+//
+//            completion(tweets, nil)
+//            return
+//        }
 
         request(URL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")!, method: .get)
             .validate()
@@ -207,6 +207,50 @@ class APIManager: SessionManager {
     func favorite(_ tweet: Tweet, completion: @escaping (Tweet?, Error?) -> ()) {
         let urlString = "https://api.twitter.com/1.1/favorites/create.json"
         let parameters = ["id": tweet.id]
+        request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.queryString).validate().responseJSON { (response) in
+            if response.result.isSuccess,
+                let tweetDictionary = response.result.value as? [String: Any] {
+                let tweet = Tweet(dictionary: tweetDictionary)
+                completion(tweet, nil)
+            } else {
+                completion(nil, response.result.error)
+            }
+        }
+    }
+    
+    func retweet(_ tweet: Tweet, completion: @escaping (Tweet?, Error?) -> ()) {
+        let parameters = ["id": tweet.id]
+        let id = parameters["id"]!
+        let urlString = "https://api.twitter.com/1.1/statuses/retweet/\(id!).json"
+        request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.queryString).validate().responseJSON { (response) in
+            if response.result.isSuccess,
+                let tweetDictionary = response.result.value as? [String: Any] {
+                let tweet = Tweet(dictionary: tweetDictionary)
+                completion(tweet, nil)
+            } else {
+                completion(nil, response.result.error)
+            }
+        }
+    }
+    
+    func unFavorite(_ tweet: Tweet, completion: @escaping (Tweet?, Error?) -> ()) {
+        let urlString = "https://api.twitter.com/1.1/favorites/destroy.json"
+        let parameters = ["id": tweet.id]
+        request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.queryString).validate().responseJSON { (response) in
+            if response.result.isSuccess,
+                let tweetDictionary = response.result.value as? [String: Any] {
+                let tweet = Tweet(dictionary: tweetDictionary)
+                completion(tweet, nil)
+            } else {
+                completion(nil, response.result.error)
+            }
+        }
+    }
+    
+    func unRetweet(_ tweet: Tweet, completion: @escaping (Tweet?, Error?) -> ()) {
+        let parameters = ["id": tweet.id]
+        let id = parameters["id"]!
+        let urlString = "https://api.twitter.com/1.1/statuses/unretweet/\(id!).json"
         request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.queryString).validate().responseJSON { (response) in
             if response.result.isSuccess,
                 let tweetDictionary = response.result.value as? [String: Any] {

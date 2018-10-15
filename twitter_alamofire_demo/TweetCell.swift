@@ -16,12 +16,9 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var timeStampLabel: UILabel!
     @IBOutlet weak var tweetLabel: UILabel!
-    @IBOutlet weak var replyImageView: UIImageView!
-    @IBOutlet weak var replyCountLabel: UILabel!
-    @IBOutlet weak var retweetImageView: UIImageView!
-    @IBOutlet weak var retweetCountLabel: UILabel!
-    @IBOutlet weak var favoriteImageView: UIImageView!
-    @IBOutlet weak var favoriteCountLabel: UILabel!
+    @IBOutlet weak var replyButton: UIButton!
+    @IBOutlet weak var retweetButton: UIButton!
+    @IBOutlet weak var favoriteButton: UIButton!
     
     var tweet: Tweet? {
         didSet {
@@ -30,8 +27,21 @@ class TweetCell: UITableViewCell {
             usernameLabel.text = "@" + (tweet?.user.screenName)!
             timeStampLabel.text = tweet?.createdAtString
             tweetLabel.text = tweet?.text
-            retweetCountLabel.text = "\(tweet!.retweetCount)"
-            favoriteCountLabel.text = "\(tweet!.favoriteCount!)"
+            retweetButton.setTitle("\(tweet!.retweetCount)", for: .normal)
+            favoriteButton.setTitle("\(tweet!.favoriteCount!)", for: .normal)
+            favoriteButton.imageView?.contentMode = UIViewContentMode.scaleAspectFit
+            retweetButton.imageView?.contentMode = UIViewContentMode.scaleAspectFit
+            replyButton.imageView?.contentMode = UIViewContentMode.scaleAspectFit
+            if (tweet?.favorited)! {
+                self.favoriteButton.imageView?.image = UIImage(named: "favor-icon-red")
+            } else {
+                self.favoriteButton.imageView?.image = UIImage(named: "favor-icon")
+            }
+            if (tweet?.retweeted)! {
+                self.retweetButton.imageView?.image = UIImage(named: "retweet-icon-green")
+            } else {
+                self.retweetButton.imageView?.image = UIImage(named: "retweet-icon")
+            }
         }
     }
     var user: User?
@@ -49,6 +59,53 @@ class TweetCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    @IBAction func onFavorite(_ sender: Any) {
+        
+        if (tweet?.favorited)! {
+            APIManager.shared.unFavorite(tweet!) { (tweet, error) in
+                if let  error = error {
+                    print("Error unfavoriting tweet: \(error.localizedDescription)")
+                } else if let tweet = tweet {
+                    print("Successfully unfavorited the following Tweet: \n\(tweet.text)")
+                    //self.tweet = tweet
+                    self.parentView?.completeNetworkRequest()
+                }
+            }
+        } else {
+            APIManager.shared.favorite(tweet!) { (tweet, error) in
+                if let  error = error {
+                    print("Error favoriting tweet: \(error.localizedDescription)")
+                } else if let tweet = tweet {
+                    print("Successfully favorited the following Tweet: \n\(tweet.text)")
+                    self.parentView?.completeNetworkRequest()
+                }
+            }
+        }
+        
+    }
     
-
+    @IBAction func onRetweet(_ sender: Any) {
+        
+        if (tweet?.retweeted)! {
+            APIManager.shared.unRetweet(tweet!) { (tweet, error) in
+                if let error = error {
+                    print("Error unretweeting tweet: \(error.localizedDescription)")
+                } else if let tweet = tweet {
+                    print("Successfully unretweeted the following Tweet: \n\(tweet.text)")
+                    self.parentView?.completeNetworkRequest()
+                }
+            }
+        } else {
+            APIManager.shared.retweet(tweet!) { (tweet, error) in
+                if let error = error {
+                    print("Error retweeting tweet: \(error.localizedDescription)")
+                } else if let tweet = tweet {
+                    print("Successfully retweeted the following Tweet: \n\(tweet.text)")
+                    self.parentView?.completeNetworkRequest()
+                }
+            }
+        }
+        
+    }
+    
 }

@@ -9,12 +9,16 @@
 import UIKit
 import Alamofire
 
-class TimelineViewController: UIViewController, UITableViewDataSource {
+class TimelineViewController: UIViewController, UITableViewDataSource, ComposeViewControllerDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBAction func didTapLogout(_ sender: Any) {
         APIManager.logout()
     }
+    @IBAction func newPost(_ sender: Any) {
+        self.performSegue(withIdentifier: "ComposeSegue", sender: nil)
+    }
+    
     var tweets: [Tweet]? = []
     var refreshControl = UIRefreshControl()
     
@@ -62,5 +66,27 @@ class TimelineViewController: UIViewController, UITableViewDataSource {
         return cell
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ComposeSegue" {
+            let user = User.current
+            if let composeViewController = segue.destination as? ComposeViewController {
+                composeViewController.delegate = self
+                composeViewController.user = User.current
+            }
+        } else if segue.identifier == "DetailSegue" {
+            let cell = sender as! TweetCell
+            if let indexPath = tableView.indexPath(for: cell) {
+                let tweet = tweets![indexPath.row]
+                let detailViewController = segue.destination as! DetailViewController
+                detailViewController.tweet = tweet
+                detailViewController.user = tweet.user
+            }
+        }
+        
+    }
+    
+    func did(post: Tweet) {
+        
+    }
 
 }

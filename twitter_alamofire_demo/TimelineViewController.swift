@@ -18,7 +18,17 @@ class TimelineViewController: UIViewController, UITableViewDataSource, ComposeVi
     @IBAction func newPost(_ sender: Any) {
         self.performSegue(withIdentifier: "ComposeSegue", sender: nil)
     }
+    @IBAction func onReply(_ sender: Any) {
+        
+        replyName = true
+        self.performSegue(withIdentifier: "ComposeSegue", sender: nil)
+        
+    }
+    @IBAction func goToProfile(_ sender: Any) {
+        self.performSegue(withIdentifier: "ProfileSegue", sender: nil)
+    }
     
+    var replyName = false
     var tweets: [Tweet]? = []
     var refreshControl = UIRefreshControl()
     
@@ -70,6 +80,9 @@ class TimelineViewController: UIViewController, UITableViewDataSource, ComposeVi
         if segue.identifier == "ComposeSegue" {
             let user = User.current
             if let composeViewController = segue.destination as? ComposeViewController {
+                if replyName {
+                    
+                }
                 composeViewController.delegate = self
                 composeViewController.user = User.current
             }
@@ -80,6 +93,12 @@ class TimelineViewController: UIViewController, UITableViewDataSource, ComposeVi
                 let detailViewController = segue.destination as! DetailViewController
                 detailViewController.tweet = tweet
                 detailViewController.user = tweet.user
+            }
+        } else if segue.identifier == "ProfileSegue" {
+            let user = User.current
+            if let profileViewController = segue.destination as? ProfileViewController {
+                profileViewController.user = user
+                profileViewController.tweets = tweets
             }
         }
         

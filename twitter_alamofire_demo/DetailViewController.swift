@@ -42,12 +42,12 @@ class DetailViewController: UIViewController {
         if let tweet = self.tweet, let user = self.user {
             
             profilePicImageView.af_setImage(withURL: tweet.user.profilepic!)
-            screenNameLabel.text = tweet.user.name
-            usernameLabel.text = tweet.user.screenName
+            screenNameLabel.text = user.name
+            usernameLabel.text = "@\(user.screenName!)"
             tweetLabel.text = tweet.text
             timeStampLabel.text = tweet.createdAtString
             retweetCountLabel.text = "\(tweet.retweetCount)"
-            favoriteCountLabel.text = "\(tweet.favoriteCount)"
+            favoriteCountLabel.text = "\(tweet.favoriteCount!)"
             
         }
         

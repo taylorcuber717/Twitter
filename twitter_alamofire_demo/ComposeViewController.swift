@@ -16,13 +16,51 @@ class ComposeViewController: UIViewController, UITextViewDelegate {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var postTextView: UITextView!
     @IBOutlet weak var remainingCharactersLabel: UILabel!
+    @IBOutlet weak var postButton: UIBarButtonItem!
     
     var user: User?
     weak var delegate: ComposeViewControllerDelegate?
+    
+    @IBAction func onCancel(_ sender: Any) {
+        self.performSegue(withIdentifier: "CancelSegue", sender: nil)
+    }
+    
+    @IBAction func didTapPost(_ sender: Any) {
+        
+        APIManager.shared.composeTweet(with: postTextView.text) { (tweet, error) in
+            if let error = error {
+                print("Error Composing Tweet: \(error.localizedDescription)")
+            } else if let tweet = tweet {
+                self.delegate?.did(post: tweet)
+                print("Compose Tweet Success")
+            }
+        }
+        
+        self.performSegue(withIdentifier: "CancelSegue", sender: nil)
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
+        if postTextView.text.count == 0 {
+            postButton.isEnabled = false
+        } else {
+            postButton.isEnabled = true
+        }
+        remainingCharactersLabel.text = "\(140 - postTextView.text.count)/140 characters remaining"
+        if postTextView.text.count >= 140 {
+            return false
+        } else {
+            return true
+        }
+        
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        remainingCharactersLabel.text = "\(140)/140 characters remaining"
+        postButton.isEnabled = false
+        postTextView.delegate = self as UITextViewDelegate
         updateUserInformation()
 
         // Do any additional setup after loading the view.

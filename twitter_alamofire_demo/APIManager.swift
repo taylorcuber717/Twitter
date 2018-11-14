@@ -14,7 +14,9 @@ import KeychainAccess
 
 class APIManager: SessionManager {
     
-    // MARK: TODO: Add App Keys
+    /*-----------API Keys & Strings--------------*/
+    
+    // Demarcated in my developer account
     static let consumerKey = "yvv5etUl1rweaUk0GND2dFf0f"
     static let consumerSecret = "zl4ipFcYqfukc2FkANfsTLxKPwLUKX2ii6szju6oZpOt9XVR6E"
 
@@ -22,9 +24,17 @@ class APIManager: SessionManager {
     static let authorizeURL = "https://api.twitter.com/oauth/authorize"
     static let accessTokenURL = "https://api.twitter.com/oauth/access_token"
     
+    // Demarcated in my developer account
     static let callbackURLString = "alamoTwitter://"
     
-    // MARK: Twitter API methods
+    
+    /*-----------Main API Methods--------------*/
+    
+    /**
+     * This is called form the AppDelegate when the user tried to login.
+     * success: completing block that executes when the user does login
+     * failure: completion block that completes with an error
+     */
     func login(success: @escaping () -> (), failure: @escaping (Error?) -> ()) {
         
         // Add callback url to open app when returning from Twitter login on web
@@ -46,7 +56,9 @@ class APIManager: SessionManager {
                     success()
                 }
             })
-        }) { (error) in
+        })
+        // This is the completion block for failure to log in.
+        { (error) in
             failure(error)
         }
     }
@@ -74,16 +86,16 @@ class APIManager: SessionManager {
 
         // This uses tweets from disk to avoid hitting rate limit. Comment out if you want fresh
         // tweets,
-        if let data = UserDefaults.standard.object(forKey: "hometimeline_tweets") as? Data {
-            let tweetDictionaries = NSKeyedUnarchiver.unarchiveObject(with: data) as! [[String: Any]]
-            let tweets = tweetDictionaries.flatMap({ (dictionary) -> Tweet in
-                Tweet(dictionary: dictionary)
-            })
-            print(tweets)
-
-            completion(tweets, nil)
-            return
-        }
+//        if let data = UserDefaults.standard.object(forKey: "hometimeline_tweets") as? Data {
+//            let tweetDictionaries = NSKeyedUnarchiver.unarchiveObject(with: data) as! [[String: Any]]
+//            let tweets = tweetDictionaries.flatMap({ (dictionary) -> Tweet in
+//                Tweet(dictionary: dictionary)
+//            })
+//            print(tweets)
+//
+//            completion(tweets, nil)
+//            return
+//        }
 
         request(URL(string: "https://api.twitter.com/1.1/statuses/home_timeline.json")!, method: .get)
             .validate()

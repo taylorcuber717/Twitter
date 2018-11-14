@@ -23,7 +23,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewD
     var user: User?
     var tweets: [Tweet]? = []
     
-
+    @IBAction func backButton(_ sender: Any) {
+        self.performSegue(withIdentifier: "BackSegue", sender: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tweetTableView.delegate = self

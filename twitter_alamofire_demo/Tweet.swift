@@ -1,16 +1,13 @@
-//
 //  Tweet.swift
 //  twitter_alamofire_demo
-//
 //  Created by Charles Hieger on 6/18/17.
 //  Copyright © 2017 Charles Hieger. All rights reserved.
-//
 
 import Foundation
 
 class Tweet {
     
-    // MARK: Properties
+    /*---------------Properties (Instance Variables)-------------*/
     var id: Int64? // For favoriting, retweeting & replying
     var text: String // Text content of tweet
     var favoriteCount: Int? // Update favorite count label
@@ -20,8 +17,14 @@ class Tweet {
     var user: User // Contains name, screenname, etc. of tweet author
     var createdAtString: String // Display date
     
-    // MARK: - Create initializer with dictionary
+    /*
+     * This is the initializer for a Tweet
+     * @param - dictionary: This JSON dictionary is used to populate
+     * the fields of the Tweet.
+     */
     init(dictionary: [String: Any]) {
+        
+        // These are the tweet properties
         if let twitid: NSNumber = dictionary["id"] as? NSNumber{
             id = twitid.int64Value
             
@@ -30,13 +33,10 @@ class Tweet {
         favoriteCount = dictionary["favorite_count"] as? Int
         favorited = dictionary["favorited"] as? Bool
         retweetCount = dictionary["retweet_count"] as! Int
-        //print("retweet count \(retweetCount)")
         retweeted = dictionary["retweeted"] as! Bool
         
+        // These are the user properties
         let user = dictionary["user"] as! [String: Any]
-        
-        let g = user["screen_name"]
-        //print("screen name \(g.debugDescription)")
         self.user = User(dictionary: user)
         
         let createdAtOriginalString = dictionary["created_at"] as! String
@@ -50,8 +50,6 @@ class Tweet {
         formatter.timeStyle = .none
         // Convert Date to String
         createdAtString = formatter.string(from: date)
-        // print("created at \(createdAtString)")
-        
         
     }
 }
